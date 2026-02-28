@@ -68,7 +68,7 @@ _data = {
 size = Vector2(13.966114, 1.944579)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ykrsh"]
-size = Vector2(13.9223, 1.583374)
+size = Vector2(13.966114, 2.0904226)
 
 [node name="Node2D" type="Node2D" unique_id=1196585656]
 
@@ -91,8 +91,9 @@ frame = 2
 
 [node name="Drill" type="Sprite2D" parent="Player/Sprite2D" unique_id=405129858]
 texture_filter = 1
-position = Vector2(-1, -2)
+position = Vector2(-4, -1)
 texture = ExtResource("3_ppyta")
+offset = Vector2(3, -1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Sprite2D" unique_id=1693335412]
 libraries/ = SubResource("AnimationLibrary_g14j6")
@@ -120,9 +121,12 @@ rotation = 3.1415927
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sand/Ground" unique_id=2135928969]
-position = Vector2(-5.9979696, 0.20831347)
+position = Vector2(-6.2387824, 0.4618373)
+scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_ykrsh")
 one_way_collision = true
 
 [connection signal="area_entered" from="Sand" to="Player" method="_on_sand_area_entered"]
 [connection signal="area_exited" from="Sand" to="Player" method="_on_sand_area_exited"]
+[connection signal="body_entered" from="Sand" to="Player" method="_on_sand_body_entered"]
+[connection signal="body_exited" from="Sand" to="Player" method="_on_sand_body_exited"]

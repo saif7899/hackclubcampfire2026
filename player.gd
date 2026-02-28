@@ -13,11 +13,10 @@ var inputDir = Vector2.ZERO
 
 @export var dashSpeed = 100
 @export var dashDuration = 0.1
-
+var mouseDir = (get_global_mouse_position() - global_position).normalized()
 
 func _physics_process(delta: float) -> void:
-
-	
+	$Sprite2D/Drill.look_at(get_global_mouse_position())
 	if Input.is_action_just_pressed("Dash"):
 		Dash()
 	
@@ -38,7 +37,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = moveDirection * walkSpeed
 
 	elif state == States.digging:
-		velocity = ((get_global_mouse_position() - global_position).normalized()) * digSpeed
+		velocity = mouseDir * digSpeed
 
 
 		if (Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("ui_up")) and is_on_floor():
@@ -49,7 +48,7 @@ func _physics_process(delta: float) -> void:
 func Dash():
 	set_collision_mask_value(3,false)
 	state = States.dashing
-	var dir = (get_global_mouse_position() - global_position).normalized()
+	var dir = mouseDir
 	velocity = dir * dashSpeed
 	
 	await get_tree().create_timer(dashDuration).timeout
@@ -58,13 +57,12 @@ func Dash():
 	if state != States.digging:
 		state = States.base
 
-func _on_sand_area_entered(area: Area2D) -> void:
+
+
+func _on_sand_body_entered(body: Node2D) -> void:
 	if state == States.dashing:
-		state = States.base
-	
+		state = States.digging
 
-
-func _on_sand_area_exited(area: Area2D) -> void:
+func _on_sand_body_exited(body: Node2D) -> void:
 	if state == States.digging:
 		state = States.base
-		
