@@ -13,9 +13,10 @@ var inputDir = Vector2.ZERO
 
 @export var dashSpeed = 100
 @export var dashDuration = 0.1
-var mouseDir = (get_global_mouse_position() - global_position).normalized()
+var mouseDir = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
+	mouseDir = (get_global_mouse_position() - global_position).normalized()
 	$Sprite2D/Drill.look_at(get_global_mouse_position())
 	if Input.is_action_just_pressed("Dash"):
 		Dash()
@@ -23,6 +24,9 @@ func _physics_process(delta: float) -> void:
 	if state == States.base:
 		if not is_on_floor():
 			velocity.y += gravity * delta
+			
+		if (Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("ui_up")) and is_on_floor():
+			velocity.y = jumpHeight 
 		inputDir = Input.get_axis("ui_left", "ui_right")
 		moveDirection = inputDir
 		if inputDir != 0 and is_on_floor():

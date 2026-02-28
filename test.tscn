@@ -65,10 +65,10 @@ _data = {
 [sub_resource type="QuadMesh" id="QuadMesh_ppyta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ppyta"]
-size = Vector2(13.966114, 1.944579)
+size = Vector2(13.966114, 1.8959641)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ykrsh"]
-size = Vector2(13.966114, 2.0904226)
+size = Vector2(13.966114, 1.9931927)
 
 [node name="Node2D" type="Node2D" unique_id=1196585656]
 
@@ -111,7 +111,7 @@ scale = Vector2(13.967, 2.0000002)
 mesh = SubResource("QuadMesh_ppyta")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sand" unique_id=1225552381]
-position = Vector2(-6.019877, -0.048614025)
+position = Vector2(-6.019877, -0.072921276)
 scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_ppyta")
 
@@ -121,7 +121,7 @@ rotation = 3.1415927
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sand/Ground" unique_id=2135928969]
-position = Vector2(-6.2387824, 0.4618373)
+position = Vector2(-6.238784, 0.5104518)
 scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_ykrsh")
 one_way_collision = true
