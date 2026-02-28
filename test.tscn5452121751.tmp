@@ -62,18 +62,14 @@ _data = {
 &"Walk": SubResource("Animation_ykrsh")
 }
 
-[sub_resource type="QuadMesh" id="QuadMesh_ppyta"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ppyta"]
-size = Vector2(13.966114, 1.944579)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ykrsh"]
-size = Vector2(13.9223, 1.583374)
+size = Vector2(13.9591, 2)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ppyta"]
 
 [node name="Node2D" type="Node2D" unique_id=1196585656]
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=474567588]
-z_index = 3
 position = Vector2(96, 114)
 collision_mask = 5
 script = ExtResource("1_8uh7m")
@@ -104,25 +100,22 @@ rotation = 3.1415927
 scale = Vector2(22.841, 20.57)
 collision_layer = 4
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Sand" unique_id=205380850]
-position = Vector2(-6.0109205, 0)
-scale = Vector2(13.967, 2.0000002)
-mesh = SubResource("QuadMesh_ppyta")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sand" unique_id=1225552381]
-position = Vector2(-6.019877, -0.048614025)
+position = Vector2(-5.9795704, 0)
 scale = Vector2(1, 1.0000001)
-shape = SubResource("RectangleShape2D_ppyta")
+shape = SubResource("RectangleShape2D_ykrsh")
 
 [node name="Ground" type="StaticBody2D" parent="Sand" unique_id=1751235883]
-position = Vector2(-12.171096, 0.4861449)
-rotation = 3.1415927
+scale = Vector2(1, 1.0000001)
 collision_layer = 4
 
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Sand/Ground" unique_id=205380850]
+position = Vector2(-6.01092, 0)
+scale = Vector2(13.967, 2)
+mesh = SubResource("QuadMesh_ppyta")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sand/Ground" unique_id=2135928969]
-position = Vector2(-5.9979696, 0.20831347)
+position = Vector2(-5.97957, 0)
 shape = SubResource("RectangleShape2D_ykrsh")
 one_way_collision = true
-
-[connection signal="area_entered" from="Sand" to="Player" method="_on_sand_area_entered"]
-[connection signal="area_exited" from="Sand" to="Player" method="_on_sand_area_exited"]
+one_way_collision_margin = 2.4
