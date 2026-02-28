@@ -11,15 +11,22 @@ var inputDir = Vector2.ZERO
 
 @export var jumpHeight = -100
 
-@export var dashSpeed = 100
-@export var dashDuration = 0.1
+@export var dashSpeed = 200
+@export var dashDuration = 0.2
 var mouseDir = Vector2.ZERO
+var airDashed = false
+var dashCooldown = 0.5
+var inDashCooldown = false
 
 func _physics_process(delta: float) -> void:
 	mouseDir = (get_global_mouse_position() - global_position).normalized()
 	$Sprite2D/Drill.look_at(get_global_mouse_position())
-	if Input.is_action_just_pressed("Dash"):
+	if Input.is_action_just_pressed("Dash") and !airDashed and !inDashCooldown:
 		Dash()
+	if is_on_floor():
+		airDashed = false
+		if Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("ui_up"):
+			velocity.y = jumpHeight 
 	
 	if state == States.base:
 		if not is_on_floor():
@@ -39,17 +46,13 @@ func _physics_process(delta: float) -> void:
 		elif inputDir > 0:
 			$Sprite2D.scale.x = 1
 		velocity.x = moveDirection * walkSpeed
-
 	elif state == States.digging:
 		velocity = mouseDir * digSpeed
-
-
-		if (Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("ui_up")) and is_on_floor():
-			velocity.y = jumpHeight 
 	
 	move_and_slide()
 
 func Dash():
+	dashCooldown = true	
 	set_collision_mask_value(3,false)
 	state = States.dashing
 	var dir = mouseDir
@@ -57,10 +60,12 @@ func Dash():
 	
 	await get_tree().create_timer(dashDuration).timeout
 	set_collision_mask_value(3,true)
-	velocity = Vector2.ZERO
 	if state != States.digging:
+		if not is_on_floor():
+			airDashed = true
 		state = States.base
-
+	await get_tree().create_timer(dashCooldown).timeout
+	dashCooldown = true
 
 
 func _on_sand_body_entered(body: Node2D) -> void:
