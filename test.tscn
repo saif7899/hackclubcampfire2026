@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://qcwjpdqbcc6a" path="res://player.gd" id="1_8uh7m"]
 [ext_resource type="Texture2D" uid="uid://c0cpguvr4kadl" path="res://driller.png" id="3_6uqi0"]
 [ext_resource type="Texture2D" uid="uid://3audwabl5yex" path="res://drill.png" id="3_ppyta"]
+[ext_resource type="Texture2D" uid="uid://q25emldaqkl7" path="res://pixilart-sprite.png" id="4_ppyta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6uqi0"]
 size = Vector2(6, 18)
@@ -13,7 +14,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath(".:mole")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -70,6 +71,44 @@ size = Vector2(13.966114, 1.8959641)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ykrsh"]
 size = Vector2(13.966114, 1.9931927)
 
+[sub_resource type="Animation" id="Animation_g14j6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_vbegm"]
+resource_name = "mole_aggro_anim"
+length = 0.43333334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666669),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ehkex"]
+_data = {
+&"RESET": SubResource("Animation_g14j6"),
+&"mole_aggro_anim": SubResource("Animation_vbegm")
+}
+
 [node name="Node2D" type="Node2D" unique_id=1196585656]
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=474567588]
@@ -125,6 +164,18 @@ position = Vector2(-6.238784, 0.5104518)
 scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_ykrsh")
 one_way_collision = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2125168618]
+texture_filter = 1
+position = Vector2(36, 126)
+texture = ExtResource("4_ppyta")
+hframes = 2
+frame = 1
+
+[node name="AggroAnimation" type="AnimationPlayer" parent="Sprite2D" unique_id=861401061]
+libraries/ = SubResource("AnimationLibrary_ehkex")
+
+[node name="PassiveAnimation" type="AnimationPlayer" parent="Sprite2D" unique_id=869837451]
 
 [connection signal="area_entered" from="Sand" to="Player" method="_on_sand_area_entered"]
 [connection signal="area_exited" from="Sand" to="Player" method="_on_sand_area_exited"]
