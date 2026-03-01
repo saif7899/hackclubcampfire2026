@@ -130,7 +130,7 @@ collision_use_scale = true
 
 [node name="Player" type="CharacterBody2D" unique_id=427819962]
 z_index = 3
-collision_mask = 5
+collision_mask = 13
 script = ExtResource("1_i3pqv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=242853963]
@@ -154,7 +154,7 @@ libraries/ = SubResource("AnimationLibrary_g14j6")
 autoplay = &"Idle"
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2074535296]
-collision_mask = 6
+collision_mask = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1843698225]
 position = Vector2(0.5, -7)

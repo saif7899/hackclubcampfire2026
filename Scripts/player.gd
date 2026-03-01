@@ -28,20 +28,21 @@ var wasInSand = false
 @onready var drill_particles = $DrillParticles
 @onready var drill_mat : ParticleProcessMaterial = drill_particles.process_material
 
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
+	for area in $Area2D.get_overlapping_areas():
+		if area.get_collision_layer_value(4):
+			get_tree().reload_current_scene()
 	var tilemap = $"../TileMapLayer"
 	var cell = tilemap.local_to_map(tilemap.to_local(global_position))
 	var tile_data = tilemap.get_cell_tile_data(cell)
 	if tile_data and tile_data.get_custom_data("isSand"):
 		inSand = true
-		if state == States.dashing:
-			state = States.digging
+		state = States.digging
 	else:
 		inSand = false
 		if wasInSand and !inSand:
 			$Camera2D.shake(5)
 			state = States.exiting
-	
 	wasInSand = inSand
 	
 	if state == States.digging or state == States.dashing:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7nvkn4fy2bww"
-path="res://.godot/imported/pixilart-sprite (1) (1).png-a95762ff0a33ad856e43e4d54404f8a3.ctex"
+uid="uid://wr1r5pfp0m7t"
+path="res://.godot/imported/single spike.png-413e1d70b22bfa6ddf67d776b05b57ef.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/pixilart-sprite (1) (1).png"
-dest_files=["res://.godot/imported/pixilart-sprite (1) (1).png-a95762ff0a33ad856e43e4d54404f8a3.ctex"]
+source_file="res://single spike.png"
+dest_files=["res://.godot/imported/single spike.png-413e1d70b22bfa6ddf67d776b05b57ef.ctex"]
 
 [params]
 

@@ -7,11 +7,9 @@ var time = 0.0
 func _physics_process(delta: float) -> void:
 	time += delta * shake_speed
 
-	# Apply shake
 	offset.x = sin(time) * shake_strength
 	offset.y = cos(time) * shake_strength
 
-	# Automatically decay back to 0
 	shake_strength = lerp(shake_strength, 0.0, shake_decay * delta)
 
 
