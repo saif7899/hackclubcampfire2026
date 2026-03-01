@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://m7p50up21bmb"]
+
+[ext_resource type="Texture2D" uid="uid://7nvkn4fy2bww" path="res://Scenes/pixilart-sprite (1) (1).png" id="1_wtcfe"]
+
+[node name="Node2D" type="Node2D" unique_id=1308363243]
+position = Vector2(33, 19)
+
+[node name="Key" type="Sprite2D" parent="." unique_id=135518625]
+texture_filter = 1
+texture = ExtResource("1_wtcfe")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Key" unique_id=1282050854]
