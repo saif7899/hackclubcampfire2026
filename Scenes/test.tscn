@@ -237,7 +237,6 @@ position = Vector2(157, 120)
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=2145334799]
 position = Vector2(0, -10)
-limit_enabled = false
 limit_left = 0
 limit_top = 20
 limit_right = 356
@@ -275,6 +274,7 @@ visibility_layer = 256
 z_index = 239
 position = Vector2(154, 506)
 script = ExtResource("6_g14j6")
+next_scene = "Scenes/Area2.tscn"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Area2D" unique_id=1589028138]
 
@@ -288,11 +288,9 @@ metadata/_edit_use_anchors_ = true
 [node name="ColorRect" type="ColorRect" parent="Area2D/CanvasLayer/Control" unique_id=693321285]
 layout_direction = 1
 layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.008595988
-anchor_top = 0.058252428
-anchor_right = 0.991404
-anchor_bottom = 1.0582525
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)

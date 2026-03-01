@@ -1,6 +1,6 @@
 extends CharacterBody2D
 enum States {base, digging, dashing, exiting}
-var state: States = States.base
+var state: States = States.exiting
 @onready var anim = $Sprite2D/AnimationPlayer
 
 var moveDirection = Vector2.RIGHT
@@ -25,6 +25,8 @@ var mouseDir = Vector2.ZERO
 var inSand = false
 var wasInSand = false
 
+@onready var drill_particles = $DrillParticles
+@onready var drill_mat : ParticleProcessMaterial = drill_particles.process_material
 
 func _physics_process(delta: float) -> void:	
 	var tilemap = $"../TileMapLayer"
@@ -84,12 +86,18 @@ func _physics_process(delta: float) -> void:
 		elif inputDir > 0:
 			$Sprite2D.scale.x = 1
 		speed = Vector2(moveDirection * walkSpeed, velocity.y)
-	elif state == States.digging:
+	if state == States.digging:
 		speed = velocity.lerp(mouseDir * digSpeed, 0.5)
+		drill_particles.emitting = true
+		if velocity.length() > 0.1:
+			var dir = -velocity.normalized()
+			drill_mat.direction = Vector3(dir.x, dir.y, 0.0)
 		$Sprite2D.scale.x = 1
 		anim.play("Digging")
 		$Camera2D.shake(0.05)
 		rotation = lerp_angle(rotation,(get_global_mouse_position() - global_position).angle(),0.3)
+	else:
+		$DrillParticles.emitting = false
 	
 	if state != States.dashing and state != States.exiting:
 		velocity = velocity.lerp(speed, 0.6)
