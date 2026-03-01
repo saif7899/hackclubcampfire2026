@@ -3,27 +3,50 @@ enum States {base, digging, dashing, exiting}
 var state: States = States.base
 @onready var anim = $Sprite2D/AnimationPlayer
 
+var moveDirection = Vector2.RIGHT
+var inputDir = Vector2.ZERO
+
 @export var walkSpeed = 130
 @export var digSpeed = 230
 @export var gravity = 200
-var moveDirection = Vector2.RIGHT
-var inputDir = Vector2.ZERO
+
 
 @export var jumpHeight = -100
 
 @export var dashSpeed = 400
 @export var dashDuration = 0.15
-var mouseDir = Vector2.ZERO
-var airDashed = false
+var airDashed = true
 var dashCooldown = 0.5
 var inDashCooldown = false
+
 var speed = Vector2.ZERO
+var mouseDir = Vector2.ZERO
 
 var inSand = false
+var wasInSand = false
 
-func _physics_process(delta: float) -> void:
+
+func _physics_process(delta: float) -> void:	
+	var tilemap = $"../TileMapLayer"
+	var cell = tilemap.local_to_map(tilemap.to_local(global_position))
+	var tile_data = tilemap.get_cell_tile_data(cell)
+	if tile_data and tile_data.get_custom_data("isSand"):
+		inSand = true
+		if state == States.dashing:
+			state = States.digging
+	else:
+		inSand = false
+		if wasInSand and !inSand:
+			state = States.exiting
+	
+	wasInSand = inSand
+	
+	if state == States.digging or state == States.dashing:
+		set_collision_mask_value(3,false)
+	else:
+		set_collision_mask_value(3,true)
+	
 	mouseDir = (get_global_mouse_position() - global_position).normalized()
-	$Sprite2D/Drill.look_at(get_global_mouse_position())
 	
 	if Input.is_action_just_pressed("Dash"):
 		Dash()
@@ -39,12 +62,13 @@ func _physics_process(delta: float) -> void:
 	if state == States.base or state == States.exiting:
 		if not is_on_floor():
 			velocity.y += gravity * delta
-		else:
+		if is_on_floor() and !inSand:
 			velocity.y = 0
 			state = States.base
-			rotation = lerp_angle(rotation,0,0.7)
+			rotation = lerp_angle(rotation,0,0.9)
 	
 	if state == States.base:
+		$Sprite2D/Drill.look_at(get_global_mouse_position())
 		if (Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("ui_up")) and is_on_floor():
 			velocity.y = jumpHeight 
 		inputDir = Input.get_axis("ui_left", "ui_right")
@@ -63,7 +87,7 @@ func _physics_process(delta: float) -> void:
 		speed = velocity.lerp(mouseDir * digSpeed, 0.5)
 		$Sprite2D.scale.x = 1
 		anim.play("Digging")
-		look_at(get_global_mouse_position())
+		rotation = lerp_angle(rotation,(get_global_mouse_position() - global_position).angle(),0.3)
 	
 	if state != States.dashing and state != States.exiting:
 		velocity = velocity.lerp(speed, 0.6)
@@ -80,9 +104,6 @@ func Dash():
 		if not is_on_floor():
 			airDashed = true
 	
-	if state != States.digging: 
-		set_collision_mask_value(3,false)
-	
 	state = States.dashing
 	var dir = mouseDir
 	anim.play("Digging")
@@ -91,19 +112,21 @@ func Dash():
 	
 	await get_tree().create_timer(dashDuration).timeout
 	
-	set_collision_mask_value(3,true)
 	if dir.y < -0.7:
 		velocity.y *= 0.5
 	
 	velocity = lerp(velocity, Vector2.ZERO, 0.5)
 	if state == States.dashing:
-		if stateBefore == States.exiting:
-			state = States.base
-			rotation = 0
+		if inSand:
+			state = States.digging
 		else:
-			if stateBefore == States.base:
-				rotation = 0
-			state = stateBefore
+			if stateBefore == States.digging:
+				state = States.exiting
+			else:
+				state = States.base
+				rotation = lerp_angle(rotation,0,0.9)
+
+	
 	await get_tree().create_timer(dashCooldown).timeout
 	inDashCooldown = false
 
