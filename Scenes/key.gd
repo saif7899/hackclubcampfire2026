@@ -14,7 +14,7 @@ func _on_body_entered(body):
 		return
 	if body is CharacterBody2D:
 		triggered = true
-		queue_free()
+		$"PixilartSprite(1)(1)".visible = false
 		FadeAndSwitch()
 
 func FadeAndSwitch():
