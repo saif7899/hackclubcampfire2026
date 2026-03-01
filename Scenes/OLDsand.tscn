@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://d1uoctmpjon3d"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ppyta"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ppyta"]
+size = Vector2(13.966114, 12.105005)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ykrsh"]
+size = Vector2(13.966114, 12.39669)
+
+[node name="Sand" type="Area2D" unique_id=486239074]
+rotation = 3.1415927
+scale = Vector2(22.841, 20.57)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=2125421023]
+position = Vector2(-6.0109205, -5.21147)
+scale = Vector2(13.967, 12.42294)
+mesh = SubResource("QuadMesh_ppyta")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=12132099]
+position = Vector2(-6.0198765, -5.226057)
+scale = Vector2(1, 1.0000001)
+shape = SubResource("RectangleShape2D_ppyta")
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=950166295]
+position = Vector2(-12.171096, 0.4861449)
+rotation = 3.1415927
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1697994975]
+position = Vector2(-6.238784, 5.469128)
+scale = Vector2(1, 1.0000001)
+shape = SubResource("RectangleShape2D_ykrsh")
+one_way_collision = true
