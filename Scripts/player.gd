@@ -29,15 +29,13 @@ var wasInSand = false
 @onready var drill_mat : ParticleProcessMaterial = drill_particles.process_material
 
 func _physics_process(delta: float) -> void:
-	for area in $Area2D.get_overlapping_areas():
-		if area.get_collision_layer_value(4):
-			get_tree().reload_current_scene()
 	var tilemap = $"../TileMapLayer"
 	var cell = tilemap.local_to_map(tilemap.to_local(global_position))
 	var tile_data = tilemap.get_cell_tile_data(cell)
 	if tile_data and tile_data.get_custom_data("isSand"):
 		inSand = true
 		state = States.digging
+		airDashed = false
 	else:
 		inSand = false
 		if wasInSand and !inSand:
@@ -109,6 +107,8 @@ func _physics_process(delta: float) -> void:
 func Dash():
 	if inDashCooldown or (airDashed and state != States.digging):
 		return
+	if state == States.exiting:
+		await get_tree().create_timer(0.07).timeout
 	var stateBefore = state
 	inDashCooldown = true
 	if !inSand:
@@ -134,6 +134,7 @@ func Dash():
 	if state == States.dashing:
 		if inSand:
 			state = States.digging
+			airDashed = false
 		else:
 			if stateBefore == States.digging:
 				state = States.exiting
@@ -159,3 +160,8 @@ func _on_sand_body_entered(_body: Node2D) -> void:
 func _on_sand_body_shape_exited(_body_rid: RID, _body: Node2D, _body_shape_index: int, _local_shape_index: int) -> void:
 	inSand = false
 	state = States.exiting
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.get_collision_layer_value(4):
+		get_tree().call_deferred("reload_current_scene")
