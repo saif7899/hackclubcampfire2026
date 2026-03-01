@@ -103,6 +103,31 @@ _data = {
 &"Walk": SubResource("Animation_ykrsh")
 }
 
+[sub_resource type="Gradient" id="Gradient_6t5aa"]
+offsets = PackedFloat32Array(0.006024096, 0.8192771, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.5, 0.38, 0.19999999, 1, 0.43, 0.29412, 0.090299994, 0.38431373)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vgqql"]
+gradient = SubResource("Gradient_6t5aa")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6t5aa"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1.035, 1.065, 1)
+angle_min = -179.99998
+angle_max = 180.00002
+inherit_velocity_ratio = 0.472
+spread = 50.553
+initial_velocity_min = 80.0
+initial_velocity_max = 150.0
+angular_velocity_min = -180.00002
+angular_velocity_max = 179.99998
+gravity = Vector3(0, 50, 0)
+scale_min = 2.0
+scale_max = 5.0
+color = Color(0.7178294, 0.5072148, 0.14103481, 1)
+color_ramp = SubResource("GradientTexture1D_vgqql")
+collision_use_scale = true
+
 [node name="Player" type="CharacterBody2D" unique_id=427819962]
 z_index = 3
 collision_mask = 5
@@ -134,3 +159,14 @@ collision_mask = 6
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1843698225]
 position = Vector2(0.5, -7)
 shape = SubResource("RectangleShape2D_6uqi0")
+
+[node name="DrillParticles" type="GPUParticles2D" parent="." unique_id=74138873]
+z_index = -1
+position = Vector2(14, -11)
+rotation = 3.1415927
+emitting = false
+amount = 40
+lifetime = 0.5
+randomness = 0.55
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_6t5aa")
