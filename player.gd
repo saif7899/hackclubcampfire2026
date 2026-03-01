@@ -3,7 +3,7 @@ enum States {base, digging, dashing, exiting}
 var state: States = States.base
 @onready var anim = $Sprite2D/AnimationPlayer
 
-@export var walkSpeed = 100
+@export var walkSpeed = 130
 @export var digSpeed = 230
 @export var gravity = 200
 var moveDirection = Vector2.RIGHT
@@ -12,7 +12,7 @@ var inputDir = Vector2.ZERO
 @export var jumpHeight = -100
 
 @export var dashSpeed = 400
-@export var dashDuration = 0.1
+@export var dashDuration = 0.15
 var mouseDir = Vector2.ZERO
 var airDashed = false
 var dashCooldown = 0.5
@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		look_at(get_global_mouse_position())
 	
 	if state != States.dashing and state != States.exiting:
-		velocity = velocity.lerp(speed, 0.3)
+		velocity = velocity.lerp(speed, 0.6)
 	else:
 		$Sprite2D.scale.x = 1
 	move_and_slide()
@@ -92,11 +92,12 @@ func Dash():
 	await get_tree().create_timer(dashDuration).timeout
 	
 	set_collision_mask_value(3,true)
+	if dir.y < -0.7:
+		velocity.y *= 0.5
 	
 	velocity = lerp(velocity, Vector2.ZERO, 0.5)
 	if state == States.dashing:
 		if stateBefore == States.exiting:
-			
 			state = States.base
 			rotation = 0
 		else:

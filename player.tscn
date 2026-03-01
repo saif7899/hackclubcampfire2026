@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://cm1b13d14ebf1"]
+
+[ext_resource type="Script" uid="uid://qcwjpdqbcc6a" path="res://player.gd" id="1_i3pqv"]
+[ext_resource type="Texture2D" uid="uid://c0cpguvr4kadl" path="res://driller.png" id="2_hqtel"]
+[ext_resource type="Texture2D" uid="uid://3audwabl5yex" path="res://drill.png" id="3_sweqy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6uqi0"]
+size = Vector2(7, 14)
+
+[sub_resource type="Animation" id="Animation_g14j6"]
+resource_name = "Digging"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Drill:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_6uqi0"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_ppyta"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Drill:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_ykrsh"]
+resource_name = "Walk"
+length = 0.33333334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g14j6"]
+_data = {
+&"Digging": SubResource("Animation_g14j6"),
+&"Idle": SubResource("Animation_6uqi0"),
+&"RESET": SubResource("Animation_ppyta"),
+&"Walk": SubResource("Animation_ykrsh")
+}
+
+[node name="Player" type="CharacterBody2D" unique_id=427819962]
+z_index = 3
+collision_mask = 5
+script = ExtResource("1_i3pqv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=242853963]
+position = Vector2(0.5, -7)
+shape = SubResource("RectangleShape2D_6uqi0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2117616887]
+texture = ExtResource("2_hqtel")
+offset = Vector2(4, -9)
+hframes = 4
+frame = 2
+
+[node name="Drill" type="Sprite2D" parent="Sprite2D" unique_id=656998924]
+texture_filter = 1
+position = Vector2(0, -10)
+texture = ExtResource("3_sweqy")
+offset = Vector2(3, -1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D" unique_id=396030486]
+libraries/ = SubResource("AnimationLibrary_g14j6")
+autoplay = &"Idle"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1265599620]
+position = Vector2(0, -10)
+limit_enabled = false
+limit_left = 0
+limit_right = 358
+limit_smoothed = true
+position_smoothing_enabled = true
+rotation_smoothing_speed = 0.0
