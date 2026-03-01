@@ -37,6 +37,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		inSand = false
 		if wasInSand and !inSand:
+			$Camera2D.shake(5)
 			state = States.exiting
 	
 	wasInSand = inSand
@@ -87,6 +88,7 @@ func _physics_process(delta: float) -> void:
 		speed = velocity.lerp(mouseDir * digSpeed, 0.5)
 		$Sprite2D.scale.x = 1
 		anim.play("Digging")
+		$Camera2D.shake(0.05)
 		rotation = lerp_angle(rotation,(get_global_mouse_position() - global_position).angle(),0.3)
 	
 	if state != States.dashing and state != States.exiting:
@@ -114,7 +116,11 @@ func Dash():
 	
 	if dir.y < -0.7:
 		velocity.y *= 0.5
-	
+	if inSand:
+		if stateBefore == States.digging:
+			$Camera2D.shake(3)
+		else:
+			$Camera2D.shake(6)
 	velocity = lerp(velocity, Vector2.ZERO, 0.5)
 	if state == States.dashing:
 		if inSand:
