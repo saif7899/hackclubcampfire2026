@@ -30,10 +30,11 @@ var wasInSand = false
 
 func _physics_process(delta: float) -> void:
 	var tilemap = $"../TileMapLayer"
-	var cell = tilemap.local_to_map(tilemap.to_local(global_position))
+	var cell = tilemap.local_to_map(tilemap.to_local(global_position - Vector2(0.4,0.5)))
 	var tile_data = tilemap.get_cell_tile_data(cell)
 	if tile_data and tile_data.get_custom_data("isSand"):
 		inSand = true
+		#if state == States.dashing:
 		state = States.digging
 		airDashed = false
 	else:
@@ -109,6 +110,7 @@ func Dash():
 		return
 	if state == States.exiting:
 		await get_tree().create_timer(0.07).timeout
+	set_collision_mask_value(3,false)
 	var stateBefore = state
 	inDashCooldown = true
 	if !inSand:
@@ -131,16 +133,16 @@ func Dash():
 		else:
 			$Camera2D.shake(6)
 	velocity = lerp(velocity, Vector2.ZERO, 0.5)
-	if state == States.dashing:
-		if inSand:
-			state = States.digging
-			airDashed = false
+	if inSand:
+		state = States.digging
+		airDashed = false
+	else:
+		set_collision_mask_value(3, true)
+		if stateBefore == States.digging:
+			state = States.exiting
 		else:
-			if stateBefore == States.digging:
-				state = States.exiting
-			else:
-				state = States.base
-				rotation = lerp_angle(rotation,0,0.9)
+			state = States.base
+			rotation = lerp_angle(rotation,0,0.9)
 
 	
 	await get_tree().create_timer(dashCooldown).timeout
